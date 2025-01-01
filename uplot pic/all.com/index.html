@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Save Image Example</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+      input[type="file"] {
+        margin: 20px;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 20px;
+      }
+      button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Upload and Save Image</h1>
+
+    <!-- File input to upload image -->
+    <input type="file" id="imageInput" accept="image/*" />
+
+    <!-- Display uploaded image -->
+    <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none" />
+
+    <!-- Button to download the image -->
+    <button id="downloadBtn" style="display: none">Download Image</button>
+
+    <script>
+      // Handle file input and display image
+      document
+        .getElementById("imageInput")
+        .addEventListener("change", function (event) {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const imgElement = document.getElementById("uploadedImage");
+              imgElement.src = e.target.result; // Set image src to the uploaded file
+              imgElement.style.display = "block"; // Show the image
+
+              // Show the download button
+              const downloadBtn = document.getElementById("downloadBtn");
+              downloadBtn.style.display = "inline-block";
+
+              // Set the download link
+              downloadBtn.onclick = function () {
+                const link = document.createElement("a");
+                link.href = e.target.result; // Base64 URL
+                link.download = file.name; // Download the image with the original file name
+                link.click(); // Simulate click to trigger download
+              };
+            };
+            reader.readAsDataURL(file); // Convert image file to base64 URL
+          }
+        });
+    </script>
+  </body>
+</html>
